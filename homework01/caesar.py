@@ -12,10 +12,10 @@ def encrypt_caesar(plaintext: str):
     ''
     """
 
-    ciphertext: str = ''
+    ciphertext = ''
     for i in plaintext:
         if ('a' <= i <= 'z') or ('A' <= i <= 'Z'):
-            code: int = ord(i) + 3
+            code = ord(i) + 3
             if (ord('Z') < code < ord('a')) or (ord('z') < code):
                 code -= 26
             ciphertext += chr(code)
@@ -39,10 +39,10 @@ def decrypt_caesar(ciphertext: str):
     ''
     """
 
-    plaintext: str = ''
+    plaintext = ''
     for i in ciphertext:
         if ('a' <= i <= 'z') or ('A' <= i <= 'Z'):
-            code: int = ord(i) - 3
+            code = ord(i) - 3
             if (ord('Z') < code < ord('a')) or (ord('A') > code):
                 code += 26
             plaintext += chr(code)
