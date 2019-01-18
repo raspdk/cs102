@@ -16,7 +16,7 @@ def is_prime(n: int):
     for i in range(2, n):
         if n % i == 0:
             return False
-            
+
     return True
 
 
@@ -29,8 +29,14 @@ def gcd(a: int, b: int):
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
-    pass
+    
+    while (a != 0) and (b != 0):
+        if a > b:
+            a = a % b
+        else:
+            b = b % a
+
+    return a + b
 
 
 def multiplicative_inverse(e: int, phi: int):
@@ -52,10 +58,10 @@ def generate_keypair(p: int, q: int):
         raise ValueError('p and q cannot be equal')
 
     # n = pq
-    # PUT YOUR CODE HERE
+    n = p * q
 
     # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    phi = (p - 1) * (q - 1) 
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
@@ -74,7 +80,7 @@ def generate_keypair(p: int, q: int):
     return ((e, n), (d, n))
 
 
-def encrypt(pk, plaintext: str):
+def encrypt(pk, plaintext):
     # Unpack the key into it's components
     key, n = pk
     # Convert each letter in the plaintext to numbers based on
