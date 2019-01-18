@@ -29,7 +29,7 @@ def gcd(a: int, b: int):
     >>> gcd(3, 7)
     1
     """
-    
+
     while (a != 0) and (b != 0):
         if a > b:
             a = a % b
@@ -47,8 +47,28 @@ def multiplicative_inverse(e: int, phi: int):
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    pass
+    k = 0
+    y = 0
+    z = 1
+    old_phi = phi
+
+    table = [[phi, e, phi % e, phi // e]]
+    while phi % e != 0:
+        k += 1
+        x = phi % e
+        phi = e
+        e = x
+        table.append([phi, e, phi % e, phi // e])
+    for i in range(k + 1):
+        table[k - i].append(y)
+        table[k - i].append(z)
+        y1 = y
+        z1 = z
+        y = z1
+        z = y1 - z1 * (int(table[k - i - 1][3]))
+    d = table[0][5] % old_phi
+
+    return d
 
 
 def generate_keypair(p: int, q: int):
@@ -61,7 +81,7 @@ def generate_keypair(p: int, q: int):
     n = p * q
 
     # phi = (p-1)(q-1)
-    phi = (p - 1) * (q - 1) 
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
