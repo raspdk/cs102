@@ -20,7 +20,7 @@ class GameOfLife:
         # Скорость протекания игры
         self.speed = speed
 
-    def draw_grid(self):
+    def draw_grid(self) -> None:
         """ Отрисовать сетку """
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
@@ -41,7 +41,7 @@ class GameOfLife:
                 pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, a, b))
         pass
 
-    def run(self):
+    def run(self) -> None:
         """ Запустить игру """
         pygame.init()
         clock = pygame.time.Clock()
@@ -66,18 +66,18 @@ class GameOfLife:
 
 class Cell:
 
-    def __init__(self, row, col, state=False):
+    def __init__(self, row: int, col: int, state=False) -> None:
         self.row = row
         self.col = col
         self.state = state
 
-    def is_alive(self):
+    def is_alive(self) -> bool:
         return self.state
 
 
 class CellList:
 
-    def __init__(self, nrows, ncols, randomize=False):
+    def __init__(self, nrows: int, ncols: int, randomize=False) -> None:
         self.nrows = nrows
         self.ncols = ncols
         self.clist = []
@@ -87,7 +87,7 @@ class CellList:
             else:
                 self.clist.append([Cell(i, j, 0) for j in range(ncols)])
 
-    def get_neighbours(self, cell):
+    def get_neighbours(self, cell: Cell) -> list:
         neighbours = []
         x = cell.row
         y = cell.col
@@ -98,7 +98,7 @@ class CellList:
                         neighbours.append(self.clist[i][j])
         return neighbours
 
-    def update(self):
+    def update(self) -> object:
         new_clist = deepcopy(self.clist)
         for cell in self:
             num = self.get_neighbours(cell)
@@ -112,12 +112,12 @@ class CellList:
         self.clist = new_clist
         return self
 
-    def __iter__(self):
+    def __iter__(self) -> object:
         self.i = 0
         self.j = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Cell:
         if self.i == self.nrows:
             raise StopIteration
         cell = self.clist[self.i][self.j]
@@ -127,7 +127,7 @@ class CellList:
             self.j = 0
         return cell
 
-    def __str__(self):
+    def __str__(self) -> str:
         str = ''
         for i in range(self.nrows):
             for j in range(self.ncols):
@@ -139,7 +139,7 @@ class CellList:
         return str
 
     @classmethod
-    def from_file(cls, filename):
+    def from_file(cls, filename: str) -> CellList:
         new_grid = []
         with open(filename) as f:
             line = f.readline()
