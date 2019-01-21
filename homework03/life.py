@@ -52,7 +52,7 @@ class GameOfLife:
             self.draw_cell_list(self.clist)
 
             # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
+            self.clist = self.update_cell_list(self.clist)
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -78,13 +78,13 @@ class GameOfLife:
 
         :param rects: Список клеток для отрисовки, представленный в виде матрицы
         """
-        for i in range(self.cell_width):
-            for j in range(self.cell_height):
-                x = i * self.cell_size + 1
-                y = j * self.cell_size + 1
+        for i in range(self.cell_height):
+            for j in range(self.cell_width):
+                x = j * self.cell_size + 1
+                y = i * self.cell_size + 1
                 a = self.cell_size - 1
                 b = self.cell_size - 1
-                if clist[j][i] == 1:
+                if clist[i][j] == 1:
                     pygame.draw.rect(self.screen, pygame.Color('red'), (x, y, a, b))
                 else:
                     pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, a, b))
@@ -99,7 +99,14 @@ class GameOfLife:
         :return: Одномерный список ячеек, смежных к ячейке cell
         """
         neighbours = []
-        # PUT YOUR CODE HERE
+        x, y = cell
+        for i in range(x - 1, x + 2):
+            for j in range(y - 1, y + 2):
+                if (i != x) or (j != y):
+                    if (0 <= i <= self.cell_height - 1) and (0 <= j <= self.cell_width - 1):
+                        neighbours.append(self.clist[i][j])
+
+
         return neighbours
 
     def update_cell_list(self, cell_list):
@@ -112,7 +119,18 @@ class GameOfLife:
         :return: Обновленное игровое поле
         """
         new_clist = []
-        # PUT YOUR CODE HERE
+        for i in range(self.cell_height):
+            new_clist.append([])
+            for j in range(self.cell_width):
+                count_n = sum(self.get_neighbours((i, j)))
+                if (self.clist[i][j]) and (1 < count_n < 4):
+                    new_clist[i].append(1)
+                elif (not self.clist[i][j]) and (count_n == 3):
+                    new_clist[i].append(1)
+                else:
+                    new_clist[i].append(0)
+        self.clist = new_clist
+
         return self.clist
 
 
