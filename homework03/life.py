@@ -39,7 +39,7 @@ class GameOfLife:
         self.screen.fill(pygame.Color('white'))
 
         # Создание списка клеток
-        # PUT YOUR CODE HERE
+        self.clist = self.cell_list()
 
         running = True
         while running:
@@ -49,6 +49,8 @@ class GameOfLife:
             self.draw_grid()
 
             # Отрисовка списка клеток
+            self.draw_cell_list(self.clist)
+
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
 
@@ -76,7 +78,19 @@ class GameOfLife:
 
         :param rects: Список клеток для отрисовки, представленный в виде матрицы
         """
+        for i in range(self.cell_width):
+            for j in range(self.cell_height):
+                x = i * self.cell_size + 1
+                y = j * self.cell_size + 1
+                a = self.cell_size - 1
+                b = self.cell_size - 1
+                if clist[j][i] == 1:
+                    pygame.draw.rect(self.screen, pygame.Color('red'), (x, y, a, b))
+                else:
+                    pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, a, b))
+
         pass
+
 
     def get_neighbours(self, cell):
         """ Вернуть список соседей для указанной ячейки
