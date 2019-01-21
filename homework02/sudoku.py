@@ -1,3 +1,4 @@
+import random
 from typing import Tuple, List, Set, Optional
 
 
@@ -194,7 +195,17 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    grid = [['.'] * 9 for _ in range(9)]
+    grid = solve(grid)
+    N = 81 - min(81, N)
+    while N:
+    	row = random.randint(0, 8)
+    	col = random.randint(0, 8)
+    	if grid[row][col] != '.':
+    		grid[row][col] = '.'
+    		N -= 1
+
+    return grid
 
 
 if __name__ == '__main__':
