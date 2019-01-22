@@ -1,11 +1,10 @@
 import requests
 import time
-
 import config
 
+
 domain = "https://api.vk.com/method"
-access_token = # PUT YOUR ACCESS TOKEN HERE
-user_id = # PUT USER ID HERE
+access_token = config.VK_CONFIG['access_token']
 
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
@@ -16,8 +15,15 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     :param max_retries: максимальное число повторных запросов
     :param backoff_factor: коэффициент экспоненциального нарастания задержки
     """
-    # PUT YOUR CODE HERE
-
+    for i in range(max_retries):
+        try:
+            response = requests.get(url, params=params, timeout=timeout)
+            return response
+        except:
+            if i == max_retries - 1:
+                raise
+            exp_backoff = backoff_factor * (2 ** i)
+            time.sleep(exp_backoff)
 
 def get_friends(user_id, fields):
     """ Вернуть данных о друзьях пользователя
@@ -37,7 +43,7 @@ def get_friends(user_id, fields):
     }
 
     query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v=5.53".format(**query_params)
-    response = requests.get(query, query_params)
+    response = requests.get(query, params=query_params)
     return response.json()
 
 def messages_get_history(user_id, offset=0, count=20):
