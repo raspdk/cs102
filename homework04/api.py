@@ -28,7 +28,7 @@ def get(url: str, params={}, timeout=5, max_retries=5, backoff_factor=0.3) -> re
             exp_backoff = backoff_factor * (2 ** i)
             time.sleep(exp_backoff)
 
-def get_friends(user_id: int, fields: str) -> dict:
+def get_friends(user_id: int, fields="") -> dict:
     """ Вернуть данных о друзьях пользователя
 
     :param user_id: идентификатор пользователя, список друзей которого нужно получить
