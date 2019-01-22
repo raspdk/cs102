@@ -29,7 +29,12 @@ def count_dates_from_messages(messages: List[Message]) -> Tuple[Dates, Frequenci
 
     :param messages: список сообщений
     """
-    # PUT YOUR CODE HERE
+    dates = []
+    for mes in messages:
+        dates.append(fromtimestamp(mes.date))
+    freq = Counter(dates)
+
+    return tuple(list(freq.keys()), list(freq.values()))
 
 
 def plotly_messages_freq(dates: Dates, freq: Frequencies) -> None:
