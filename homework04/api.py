@@ -47,7 +47,7 @@ def get_friends(user_id, fields):
 
     query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={version}".format(**query_params)
     response = requests.get(query, params=query_params)
-    return response.json()
+    return response.json()['response']['items']
 
 def messages_get_history(user_id, offset=0, count=20):
     """ Получить историю переписки с указанным пользователем
