@@ -3,8 +3,10 @@ import time
 import config
 
 
-domain = "https://api.vk.com/method"
+domain = config.VK_CONFIG['domain']
 access_token = config.VK_CONFIG['access_token']
+version = config.VK_CONFIG['version']
+
 
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
@@ -39,10 +41,11 @@ def get_friends(user_id, fields):
         'domain' : domain,
         'access_token': access_token,
         'user_id': user_id,
-        'fields': fields
+        'fields': fields,
+        'version': version
     }
 
-    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v=5.53".format(**query_params)
+    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={version}".format(**query_params)
     response = requests.get(query, params=query_params)
     return response.json()
 
