@@ -6,6 +6,7 @@ import config
 domain = config.VK_CONFIG['domain']
 access_token = config.VK_CONFIG['access_token']
 version = config.VK_CONFIG['version']
+user_id = config.VK_CONFIG['user_id']
 
 
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
@@ -61,4 +62,28 @@ def messages_get_history(user_id, offset=0, count=20):
     assert isinstance(offset, int), "offset must be positive integer"
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
+    
+    query_params = {
+        'domain' : domain,
+        'access_token': access_token,
+        'user_id': user_id,
+        'offset': offset,
+        'count': count,
+        'version': version
+    }
+
+    messages = []
+    i = 0
+    while i < count:
+        if (i != 0) and ((i / 200) % 3 == 0):
+            time.sleep(1)
+        if count - i <= 200:
+            query_params['count'] = count - i
+        query = "{domain}/messages.getHistory?offset={offset}&count={count}&user_id={user_id}&access_token={access_token}&v={version}".format(**query_params)
+        response = requests.get(query, params=query_params)
+        json_file = response.json()['response']['items']
+        messages.extend(json_file)
+        i += 200
+        query_params['offset'] += i
+
+    return messages
