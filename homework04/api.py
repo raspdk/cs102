@@ -9,7 +9,7 @@ version = config.VK_CONFIG['version']
 user_id = config.VK_CONFIG['user_id']
 
 
-def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
+def get(url: str, params={}, timeout=5, max_retries=5, backoff_factor=0.3) -> requests.models.Response:
     """ Выполнить GET-запрос
 
     :param url: адрес, на который необходимо выполнить запрос
@@ -28,7 +28,7 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
             exp_backoff = backoff_factor * (2 ** i)
             time.sleep(exp_backoff)
 
-def get_friends(user_id, fields):
+def get_friends(user_id: int, fields: str) -> dict:
     """ Вернуть данных о друзьях пользователя
 
     :param user_id: идентификатор пользователя, список друзей которого нужно получить
@@ -39,7 +39,7 @@ def get_friends(user_id, fields):
     assert user_id > 0, "user_id must be positive integer"
     
     query_params = {
-        'domain' : domain,
+        'domain': domain,
         'access_token': access_token,
         'user_id': user_id,
         'fields': fields,
@@ -50,7 +50,7 @@ def get_friends(user_id, fields):
     response = requests.get(query, params=query_params)
     return response.json()['response']['items']
 
-def messages_get_history(user_id, offset=0, count=20):
+def messages_get_history(user_id: int, offset=0, count=20) -> list:
     """ Получить историю переписки с указанным пользователем
 
     :param user_id: идентификатор пользователя, с которым нужно получить историю переписки
@@ -62,9 +62,9 @@ def messages_get_history(user_id, offset=0, count=20):
     assert isinstance(offset, int), "offset must be positive integer"
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
-    
+
     query_params = {
-        'domain' : domain,
+        'domain': domain,
         'access_token': access_token,
         'user_id': user_id,
         'offset': offset,
