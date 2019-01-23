@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-def get_network(users_ids, as_edgelist=True):
+def get_network(users_ids: int, as_edgelist=True):
 	i = 0
 	friend_list = get_friends(users_ids)
 	edges = []
@@ -28,7 +28,7 @@ def get_network(users_ids, as_edgelist=True):
 		return matrix
 
 
-def plot_graph(user_id):
+def plot_graph(user_id: int):
     surnames = get_friends(user_id, 'last_name')
     vertices = [i['last_name'] for i in surnames]
     edges = get_network(user_id)
