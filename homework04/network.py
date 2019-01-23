@@ -1,6 +1,6 @@
 from api import get_friends
-'''import igraph
-import numpy as np'''
+import igraph
+import numpy as np
 import time
 
 
@@ -28,5 +28,33 @@ def get_network(users_ids, as_edgelist=True):
 		return matrix
 
 
-'''def plot_graph(graph):
-    # PUT YOUR CODE HERE'''
+def plot_graph(user_id):
+    surnames = get_friends(user_id, 'last_name')
+    vertices = [i['last_name'] for i in surnames]
+    edges = get_network(user_id)
+
+    gr = igraph.Graph(vertex_attrs={'shape': 'circle',
+    	'label': vertices,
+    	'size': 10},
+    	edges=edges, directed=False)
+
+    n = len(vertices)
+    style = {
+    	'vertex_size': 20,
+    	'edge_color': 'gray',
+    	'bbox':(2000, 2000),
+    	'autocurve': True,
+    	'vertex_label_dist': 1.6,
+    	'margin': 100,
+    	'layout': gr.layout_fruchterman_reingold(
+    		maxiter=100000,
+    		area=n ** 2,
+    		repulserad=n ** 2)
+    }
+
+    gr.simplify(multiple=True, loops=True)
+    clusters = gr.community_multilevel()
+    pal = igraph.drawing.colors.ClusterColoringPalette(len(clusters))
+    gr.vs['color'] = pal.get_many(clusters.membership)
+
+    igraph.plot(gr, **style)
